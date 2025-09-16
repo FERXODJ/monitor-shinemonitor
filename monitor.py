@@ -77,23 +77,25 @@ for _ in range(3):  # Intenta hasta 3 veces
 time.sleep(2)  # Espera extra para asegurar que la tabla cargue
 
 tabla = wait.until(EC.presence_of_element_located((By.XPATH, '//table[@id="invDetailTable"]')))
-filas = tabla.find_elements(By.XPATH, './/tbody/tr')[:2]
+filas = tabla.find_elements(By.XPATH, './/tbody/tr')[:1]
 
 print(f"Filas encontradas: {len(filas)}")  # Debe estar fuera del bucle
 
 datos = []
+nombre_monitor = "Rbs Mecedores"
 for fila in filas:
     columnas = fila.find_elements(By.TAG_NAME, 'td')
     fila_datos = [col.text for col in columnas]
-    print(fila_datos)  # Verifica los datos extraídos
-    datos.append(fila_datos)
+    print(fila_datos)
+    # Agrega el nombre del monitor al inicio de la fila
+    datos.append([nombre_monitor] + fila_datos)
 
 encabezados = tabla.find_elements(By.XPATH, './/thead/tr/th')
 headers = [th.text for th in encabezados]
+headers = ["Nombre del Monitor"] + headers
 
 df = pd.DataFrame(datos, columns=headers)
-nombre_rbs = "Rbs Mecedores"
-df.to_csv(f"{nombre_rbs}.csv", index=False, encoding='utf-8-sig')
+df.to_csv(f"{nombre_monitor}.csv", index=False, encoding='utf-8-sig')
 
 input("Presiona Enter para cerrar el navegador...")
 driver.quit()
