@@ -4,15 +4,14 @@ from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
+from webdriver_manager.chrome import ChromeDriverManager
 import time
 import pandas as pd
 # Ajustes Iniciales
 ChromeOptions = Options()
-DriverPath = r"C:\Users\duvely_huiza\OneDrive - MDS Telecom CA\Escritorio\Python Eduardo\chromedriver-win64\chromedriver.exe"
-service = Service(DriverPath)
- 
-# Iniciar Navegador
-driver = webdriver.Chrome(service=service, options=ChromeOptions)
+
+# Iniciar Navegador con webdriver-manager (sin chromedriver.exe manual)
+driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=ChromeOptions)
 url = "https://www.shinemonitor.com/index_en.html?1757165053874"
 driver.get(url)
 driver.maximize_window()
